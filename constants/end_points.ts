@@ -4,6 +4,7 @@ export const ENDPOINTS = {
   HOLIDAYS: "/holidays",
   ATTENDANCE :"/attendance",
   PROJECT :"/projects",
+  LEAVE_ENTITLEMENTS :"/leave_entitlements",
   DASHBOARD : "/holidays/dashboard"
 }
 

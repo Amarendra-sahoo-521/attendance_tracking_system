@@ -6,12 +6,7 @@ export class LeaveEntitlementsEntity {
   @PrimaryGeneratedColumn()
   id!: number;
 
-  @Column({
-    type:"enum",
-    enum:LeaveType,
-    default:LeaveType.Sickness,
-    comment:"Vacation,Sickness,Maternity or Paternity,Compassionate,TOIL,Work From Home,Bank Holiday"
-  })
+  @Column()
   type!: string;
 
   @Column()

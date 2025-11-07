@@ -29,7 +29,9 @@ export type Field = {
     | "searchable-select"
     | "checkbox"
     | "password"
-    | "textarea";
+    | "textarea"
+    | "color"
+    | "number";
   placeholder?: string;
   required?: boolean;
   disabled?: boolean;
@@ -57,7 +59,7 @@ export function DynamicForm({
   defaultValues = {},
   submitButtonLabel = "Save",
   cancelButtonLabel = "Cancel",
-  defaultButtonDisabled=false,
+  defaultButtonDisabled = false,
   card_form = false,
   schema,
   defaultButtonClassName,
@@ -73,11 +75,11 @@ export function DynamicForm({
     defaultValues,
     resolver: schema ? zodResolver(schema) : undefined,
   });
-  
+
   const [showPassword, setShowPassword] = useState(false);
 
   const onSubmitWithReset: SubmitHandler<any> = (data) => {
-    if(defaultValues.id){
+    if (defaultValues.id) {
       data.id = defaultValues.id;
     }
     onSubmit(data);
@@ -104,8 +106,41 @@ export function DynamicForm({
                 {field.label}
               </Label>
             )}
-
-            {field.type === "textarea" ? (
+            {field.type === "number" ? (
+              <>
+                <Input
+                  id={field.name}
+                  type="number"
+                  className="no-spinner"
+                  disabled={field.disabled}
+                  placeholder={field.placeholder}
+                  {...register(field.name, {
+                    required: field.required,
+                    valueAsNumber: true, // ✅ Converts input string to number
+                  })}
+                />
+                {errors[field.name] && (
+                  <p className="text-sm text-red-500 mt-1">
+                    {errors[field.name]?.message as string}
+                  </p>
+                )}
+              </>
+            ) : field.type === "color" ? (
+              <>
+                <Input
+                  id={field.name}
+                  type="color"
+                  disabled={field.disabled}
+                  {...register(field.name, { required: field.required })}
+                  className="w-16 h-10 p-0 border-none cursor-pointer"
+                />
+                {errors[field.name] && (
+                  <p className="text-sm text-red-500 mt-1">
+                    {errors[field.name]?.message as string}
+                  </p>
+                )}
+              </>
+            ) : field.type === "textarea" ? (
               <>
                 <textarea
                   id={field.name}
@@ -167,10 +202,7 @@ export function DynamicForm({
                       />
                     )}
                   />
-                  <label
-                    htmlFor={field.name}
-                    className="text-sm font-medium"
-                  >
+                  <label htmlFor={field.name} className="text-sm font-medium">
                     {field.label}
                   </label>
                 </div>
@@ -293,8 +325,10 @@ export function DynamicForm({
         )}
         <Button
           type="submit"
-          className={`${defaultButtonClassName ?? "w-36"} capitalize cursor-pointer`}
-          disabled = {defaultButtonDisabled}
+          className={`${
+            defaultButtonClassName ?? "w-36"
+          } capitalize cursor-pointer`}
+          disabled={defaultButtonDisabled}
         >
           {submitButtonLabel}
         </Button>

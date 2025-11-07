@@ -1,3 +1,4 @@
+import { formatDateToLocalISO } from "@/app/api/utils/functions";
 import { Base_URL, ENDPOINTS } from "@/constants/end_points";
 import axios from "axios";
 
@@ -26,10 +27,13 @@ export const createHoliday = async (data: any) => {
     throw err.response?.data || { message: "Unknown error" };
   }
 };
+
+
+
 export const editHoliday = async (data: any) => {
   try {
     const res = await axios.put(
-      `${Base_URL}${ENDPOINTS.HOLIDAYS}/${data.id}`,
+      `${Base_URL}${ENDPOINTS.HOLIDAYS}`,
       data
     );
     return res.data.data;

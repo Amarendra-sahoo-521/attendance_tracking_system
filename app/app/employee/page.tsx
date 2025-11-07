@@ -141,6 +141,7 @@ function Student() {
           data={paginatedData || []}
           columns={columns}
           navigateTo={(row) => `${PATHS.EMP_PROFILE}/${row.id}`}
+          filterColumn={"name"}
         />
         <PaginationControl
                   totalPages={totalPages}

@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button";
 import { ThreeDot } from "react-loading-indicators";
 import PaginationControl from "@/components/dynamicPagination";
 import { holidaysData } from './manage_holidays';
+import { date } from 'zod';
 
 function Holidays() {
   const {
@@ -53,9 +54,10 @@ function Holidays() {
                 setOpenForm(true);
                 setSelectedAttendance({
                   ...row.original,
-                  // end_date: row.original.end_date
-                  //   ? new Date(row.original.end_date)
-                  //   : new Date(),
+                  date: new Date(row.original.date),
+                  endDate: row.original.endDate
+                    ? new Date(row.original.endDate)
+                    : new Date(),
                 });
                 setOpenmultipul(!!row.original.endDate);
                 
@@ -119,7 +121,6 @@ function Holidays() {
             </Button>
           )}
         </div>
-
         {openForm && (
           <div className="w-full h-auto rounded-lg border-2 p-2">
             <DynamicForm
@@ -146,7 +147,7 @@ function Holidays() {
       </div>
 
       <div className="w-[90%] mx-5 mt-5">
-        <TableComponent data={paginatedData} columns={columns} />
+        <TableComponent data={paginatedData} columns={columns} filterColumn={"name"} />
         <PaginationControl
           totalPages={totalPages}
           onPageChange={(page: any) => setCurrentPage(page)}

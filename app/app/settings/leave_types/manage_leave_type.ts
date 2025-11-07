@@ -1,4 +1,3 @@
-import { formatDateToLocalISO } from "@/app/api/utils/functions";
 import { Field } from "@/components/dialog";
 import {
   allAttendance,
@@ -7,24 +6,13 @@ import {
   editAttendance,
   getAllEmpDD,
 } from "@/service/attendance.api";
-import {
-  createHoliday,
-  deleteHoliday,
-  editHoliday,
-  getAllHoliday,
-} from "@/service/holidays.api";
-import {
-  useMutation,
-  useQueries,
-  useQuery,
-  useQueryClient,
-  UseQueryResult,
-} from "@tanstack/react-query";
+import { createLeaveType, deleteLeaveType, editLeaveType, getAllLeaveType } from "@/service/leave_type.api";
+import { useMutation, useQueries, useQuery, useQueryClient,UseQueryResult  } from "@tanstack/react-query";
 import { useState } from "react";
 import { toast } from "sonner";
 import * as z from "zod";
 
-export function holidaysData() {
+export function leaveTypesData() {
   const [openmultipul, setOpenmultipul] = useState(false);
   const [openForm, setOpenForm] = useState(false);
   const [openEdit, setOpenEdit] = useState(false);
@@ -46,40 +34,41 @@ export function holidaysData() {
   //   ],
   // });
 
-  const holidayData = useQuery({
-    queryKey: ["holiday"],
-    queryFn: getAllHoliday,
+  const leaveTypesData = useQuery({
+    queryKey: ["leave_types"],
+    queryFn: getAllLeaveType,
   });
 
   const createAtdanceMutation = useMutation({
-    mutationFn: createHoliday,
+    mutationFn: createLeaveType,
     onSuccess: () => {
-      toast("Holiday created successfully");
-      queryClient.invalidateQueries({ queryKey: ["holiday"] });
+      toast("Leave Type created successfully");
+      queryClient.invalidateQueries({ queryKey: ["leave_types"] });
     },
-    onError: () => toast("Failed to create holiday"),
+    onError: () => toast("Failed to create leave type"),
   });
 
   const updateAtdanceMutation = useMutation({
-    mutationFn: editHoliday,
+    mutationFn: editLeaveType,
     onSuccess: () => {
-      toast("Attendance updated successfully");
-      queryClient.invalidateQueries({ queryKey: ["holiday"] });
+      toast("Leave Type updated successfully");
+      queryClient.invalidateQueries({ queryKey: ["leave_types"] });
     },
-    onError: () => toast("Failed to update holiday"),
+    onError: () => toast("Failed to update leave type"),
   });
 
-  const isLoading = holidayData.isLoading;
+const isLoading = leaveTypesData.isLoading;
   // updateAtdanceMutation.isLoading ||
   // createAtdanceMutation.isLoading ||
+  
 
   const deleteEmpMutation = useMutation({
-    mutationFn: deleteHoliday,
+    mutationFn: deleteLeaveType,
     onSuccess: () => {
-      toast("Attendance deleted successfully");
-      queryClient.invalidateQueries({ queryKey: ["holiday"] });
+      toast("Leave Type deleted successfully");
+      queryClient.invalidateQueries({ queryKey: ["leave_types"] });
     },
-    onError: () => toast("Failed to delete holiday"),
+    onError: () => toast("Failed to delete leave type"),
   });
 
   const handelsubmit = (data: any) => {
@@ -88,8 +77,6 @@ export function holidaysData() {
   };
 
   const handelUpdateSubmit = (data: any) => {
-    data.date = formatDateToLocalISO(new Date(data.date));
-    data.endDate = formatDateToLocalISO(new Date(data.endDate));
     updateAtdanceMutation.mutate(data);
     setOpenForm(false);
   };
@@ -99,55 +86,44 @@ export function holidaysData() {
     setOpenDelete(false);
   };
 
-  const basicFields: Field[] = [
+
+  const fields: Field[] = [
     {
-      name: "name",
-      label: "Holiday name",
+      name: "type",
+      label: "Leave type",
       type: "text",
       required: true,
     },
-  ];
-
-  const singleDay: Field[] = [
-    { name: "date", label: "Holiday Date", type: "date", required: true },
-  ];
-
-  const multiDay: Field[] = [
-    { name: "date", label: "Holiday Start Date", type: "date", required: true },
     {
-      name: "endDate",
-      label: "Holiday End Date",
-      type: "date",
+      name: "days",
+      label: "Leave days",
+      type: "number",
       required: true,
     },
-  ];
-
-  const fields: Field[] = [
-    ...basicFields,
-    ...(openmultipul ? multiDay : singleDay),
+    {
+      name: "theme",
+      label: "Leave theme",
+      type: "color",
+      required: true,
+    },
   ];
 
   const myFormSchema = z
     .object({
-      name: z.string().min(1, "name is required"),
-      date: z.date({ required_error: "date required" }),
-      endDate: z.date().optional(),
-    })
-    .refine((data) => !data.endDate || data.endDate > data.date, {
-      message: "End date must be after start date",
-      path: ["endDate"],
+      type: z.string().min(1, "type is required"),
+      days: z.number({ invalid_type_error: "days must be a number" }).min(1, "days is required"),
+      theme: z.string().min(1, "theme is required"),
     });
+  
 
-  const attendanceList = holidayData.data || [];
+  const attendanceList = leaveTypesData.data || [];
   const itemsPerPage = 10;
   const totalPages = Math.ceil(attendanceList.length / itemsPerPage);
 
-  const paginatedData =
-    attendanceList.length > 0 &&
-    attendanceList.slice(
-      (currentPage - 1) * itemsPerPage,
-      currentPage * itemsPerPage
-    );
+  const paginatedData = attendanceList.length > 0  && attendanceList.slice(
+    (currentPage - 1) * itemsPerPage,
+    currentPage * itemsPerPage
+  );
 
   return {
     isLoading,
@@ -170,6 +146,6 @@ export function holidaysData() {
     paginatedData,
     totalPages,
     updateAtdanceMutation,
-    createAtdanceMutation,
+    createAtdanceMutation
   };
 }

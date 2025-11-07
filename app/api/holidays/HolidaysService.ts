@@ -156,6 +156,7 @@ export class HolidaysService {
   }
 
   async update(payload: UpdateHolidaysDTO) {
+    try {
     const Holyday = await this.repository.findOneBy({ id: payload.id });
     if (!Holyday) {
       return {
@@ -163,11 +164,8 @@ export class HolidaysService {
         message: MESSAGES.DATA_LIST_FAILURE,
       };
     }
-    const updatedHolyday = Holyday;
-    updatedHolyday.name = payload.name ?? Holyday.name;
-
-    try {
-      const response = await this.repository.save(updatedHolyday);
+      const response = await this.repository.save(payload);
+      
       return {
         success: true,
         message: getSuccessMessage("Holyday"),

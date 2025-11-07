@@ -9,8 +9,6 @@ import {
   missingDataMessage,
 } from "../constants/messages";
 import { AttendanceCreateDTO, UpdateAttendanceDTO } from "./Attendance.dto";
-import { UserEntity } from "../db/entities/user";
-import { UserType } from "../common.enum";
 import { AttendanceEntity } from "../db/entities/attendance";
 import { EmployeeEntity } from "../db/entities/employee";
 

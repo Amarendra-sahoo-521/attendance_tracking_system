@@ -24,7 +24,7 @@ import { Calendar } from "./ui/calendar";
 export type Field = {
   name: string;
   label: string;
-  type: "text" | "email" | "date" | "select" | "searchable-select" | 'checkbox' | 'textarea';
+  type: "text" | "email" | "date" | "select" | "searchable-select" | 'checkbox' | 'textarea' | 'color' | 'number';
   placeholder?: string;
   required?: boolean;
   disabled?: boolean

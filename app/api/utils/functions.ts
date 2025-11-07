@@ -40,3 +40,9 @@ export function groupCount(data: any[], leaveCriteria: any[]) {
   };
   return [...result, totaldata];
 }
+
+export function formatDateToLocalISO(date: Date) {
+  const offset = date.getTimezoneOffset();
+  const adjusted = new Date(date.getTime() - offset * 60 * 1000);
+  return adjusted.toISOString().split('T')[0]; 
+}

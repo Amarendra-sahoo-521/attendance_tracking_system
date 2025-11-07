@@ -3,25 +3,23 @@ import { Example } from "tsoa";
 import { LeaveType } from "../common.enum";
 
 export class LeaveEntitlementsCreateDTO {
-  @IsEnum(LeaveType)
-  @Example(LeaveType.Sickness)
-  type!: LeaveType;
+  @IsString()
+  type!: string;
 
   @IsString()
-  theme!:string;
+  theme!: string;
 
   @IsNumber()
   days!: number;
 }
 
 export class UpdateLeaveEntitlementsDTO {
-  @IsEnum(LeaveType)
-  @Example(LeaveType.Sickness)
-  type!: LeaveType;
+  @IsString()
+  type!: string;
 
   @IsString()
-  theme!:string;
-  
+  theme!: string;
+
   @IsNumber()
   days!: number;
 }

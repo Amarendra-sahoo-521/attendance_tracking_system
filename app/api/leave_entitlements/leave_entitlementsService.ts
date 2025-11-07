@@ -101,6 +101,8 @@ export class LeaveEntitlementsService {
       }
       
       const response = await this.repository.save(payload);
+      console.log("response", response);
+      
       return {
         success: true,
         message: getSuccessMessage("LeaveEntitlements"),

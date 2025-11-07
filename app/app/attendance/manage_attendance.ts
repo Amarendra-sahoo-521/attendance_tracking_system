@@ -1,3 +1,4 @@
+import { formatDateToLocalISO } from "@/app/api/utils/functions";
 import { Field } from "@/components/dialog";
 import {
   allAttendance,
@@ -6,7 +7,12 @@ import {
   editAttendance,
   getAllEmpDD,
 } from "@/service/attendance.api";
-import { useMutation, useQueries, useQueryClient,UseQueryResult  } from "@tanstack/react-query";
+import {
+  useMutation,
+  useQueries,
+  useQueryClient,
+  UseQueryResult,
+} from "@tanstack/react-query";
 import { useState } from "react";
 import { toast } from "sonner";
 import * as z from "zod";
@@ -50,11 +56,10 @@ export function attendanceData() {
     },
     onError: () => toast("Failed to update attendance"),
   });
-  
-const isLoading = leavesData.isLoading;
+
+  const isLoading = leavesData.isLoading;
   // updateAtdanceMutation.isLoading ||
   // createAtdanceMutation.isLoading ||
-  
 
   const deleteEmpMutation = useMutation({
     mutationFn: deleteAttendance,
@@ -66,11 +71,15 @@ const isLoading = leavesData.isLoading;
   });
 
   const handelsubmit = (data: any) => {
+    data.start_date = formatDateToLocalISO(new Date(data.start_date));
+    data.end_date = data.end_date ? formatDateToLocalISO(new Date(data.end_date)) : null;
     createAtdanceMutation.mutate(data);
     setOpenForm(false);
   };
 
   const handelUpdateSubmit = (data: any) => {
+    data.start_date = formatDateToLocalISO(new Date(data.start_date));
+    data.end_date = formatDateToLocalISO(new Date(data.end_date));
     updateAtdanceMutation.mutate(data);
     setOpenForm(false);
   };
@@ -172,16 +181,17 @@ const isLoading = leavesData.isLoading;
       message: "End date must be after start date",
       path: ["end_date"],
     });
-  
 
   const attendanceList = leavesData.data || [];
   const itemsPerPage = 10;
   const totalPages = Math.ceil(attendanceList.length / itemsPerPage);
 
-  const paginatedData = attendanceList.length > 0  && attendanceList.slice(
-    (currentPage - 1) * itemsPerPage,
-    currentPage * itemsPerPage
-  );
+  const paginatedData =
+    attendanceList.length > 0 &&
+    attendanceList.slice(
+      (currentPage - 1) * itemsPerPage,
+      currentPage * itemsPerPage
+    );
 
   return {
     isLoading,
@@ -206,6 +216,6 @@ const isLoading = leavesData.isLoading;
     paginatedData,
     totalPages,
     updateAtdanceMutation,
-    createAtdanceMutation
+    createAtdanceMutation,
   };
 }
