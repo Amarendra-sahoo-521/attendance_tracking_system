@@ -13,12 +13,9 @@ import { FaCalendarAlt } from "react-icons/fa";
 import { Skeleton } from "@/components/ui/skeleton";
 import { dashboardData } from "./manage_dashboard";
 function dashboard() {
-  const {setLoading,loading,theme,
-data,
-options,
-graphdata,
-apiholidays} = dashboardData()
-  
+  const { setLoading, loading, theme, data, options, graphdata, apiholidays } =
+    dashboardData();
+
   const getIconByName = (name: string): JSX.Element | null => {
     switch (name) {
       case "Total Working Days":
@@ -50,13 +47,13 @@ apiholidays} = dashboardData()
         <>
           {apiholidays.data && (
             <>
-              <div className="w-full h-36  flex gap-3 ">
-                {
-                  apiholidays.data?.cardsData?.map((item: any, index: number) => {
+              <div className="w-full  h-auto sm:h-36 block sm:flex gap-3 pr-5 sm:pr-0 ">
+                {apiholidays.data?.cardsData?.map(
+                  (item: any, index: number) => {
                     return (
                       <div
                         key={index}
-                        className="h-[122px] w-[220px]  rounded-lg border-2  shadow-lg dark:shadow-primary "
+                        className="h-[122px] sm:w-[220px] w-full my-2 sm:my-0  rounded-lg border-2  shadow-lg dark:shadow-primary "
                       >
                         <GlareHover
                           className=" p-2"
@@ -90,10 +87,11 @@ apiholidays} = dashboardData()
                         </GlareHover>
                       </div>
                     );
-                  })}
+                  }
+                )}
               </div>
-              <div className="flex w-282 ">
-                <div className="w-2/5 h-96 mt-2 border-2  shadow-lg dark:shadow-primary rounded-lg ">
+              <div className="sm:flex block sm:w-282 w-full ">
+                <div className="sm:w-2/5 w-[95%] h-96 mt-2 border-2  shadow-lg dark:shadow-primary rounded-lg ">
                   <GlareHover
                     className="px-2 "
                     glareColor={`${theme === "dark" ? "#ffffff" : "#3366cc"}`}
@@ -119,8 +117,8 @@ apiholidays} = dashboardData()
                     </div>
                   </GlareHover>
                 </div>
-                <div className="w-2/3 flex flex-col justify-center gap-3">
-                  <div className="w-[97%] h-32 mt-2 ml-5 border-2  shadow-lg dark:shadow-primary rounded-lg">
+                <div className="sm:w-2/3 w-[95%] flex flex-col justify-center gap-3">
+                  <div className="sm:w-[97%] w-full h-32 mt-2 sm:ml-5 border-2  shadow-lg dark:shadow-primary rounded-lg">
                     <GlareHover
                       className="h-[122px] w-full px-2"
                       glareColor={`${theme === "dark" ? "#ffffff" : "#3366cc"}`}
@@ -140,7 +138,7 @@ apiholidays} = dashboardData()
                       />
                     </GlareHover>
                   </div>
-                  <div className="h-[90%] w-[97%] ml-5 border-2 px-2 shadow-lg dark:shadow-primary rounded-lg">
+                  <div className="h-[90%] sm:w-[97%] w-full sm:ml-5 border-2 px-2 shadow-lg dark:shadow-primary rounded-lg">
                     <GlareHover
                       className="px-2"
                       glareColor={`${theme === "dark" ? "#ffffff" : "#3366cc"}`}
@@ -156,13 +154,13 @@ apiholidays} = dashboardData()
                         Working Days Every Months Of {new Date().getFullYear()}
                       </p>
                       <div className="flex w-full items-center justify-center">
-                      <Chart
-                        chartType="ColumnChart"
-                        width="100%"
-                        height="87%"
-                        data={graphdata}
-                        className=" my-auto"
-                      />
+                        <Chart
+                          chartType="ColumnChart"
+                          width="100%"
+                          height="87%"
+                          data={graphdata}
+                          className=" my-auto"
+                        />
                       </div>
                     </GlareHover>
                   </div>

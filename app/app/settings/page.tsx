@@ -36,7 +36,7 @@ function Settings() {
     ]
   return (
     <div className='px-9 py-7 w-full'>
-        <div className="mx-auto w-[95%] h-auto flex flex-wrap">
+        <div className="mx-auto sm:w-[95%] w-full h-auto flex flex-wrap bg-red-400">
             {content.map((item:any)=>(
                 <div key={item.name} className="h-[200px]  w-[482px] m-6 rounded-xl cursor-pointer border-2  " 
                 // style={{ bg-[#3366cc66]
@@ -47,7 +47,7 @@ function Settings() {
                 onClick={()=>router.push(`${PATHS.SETTINGS}/${item.navigatePath}`)}
                   >
                    <GlareHover
-                          className="flex justify-between p-5 shadow-lg dark:shadow-primary"
+                          className="flex  justify-center sm:justify-between p-5 shadow-lg dark:shadow-primary"
                           glareColor={`${
                             theme === "dark" ? "#ffffff" : "#3366cc"
                           }`}
@@ -59,7 +59,7 @@ function Settings() {
                           transitionDuration={800}
                           playOnce={false}
                         >
-                   <p className='font-extrabold text-2xl my-2 capitalize'>{item.name}</p>
+                   <p className='font-extrabold text-2xl sm:my-2 capitalize absolute sm:relative bottom-0'>{item.name}</p>
                    <span className='my-auto'>{item.icon}</span>
                         </GlareHover>
                    </div>
